@@ -1,5 +1,5 @@
 # beats per minute
-use_bpm 140
+use_bpm 40
 
 # Choose a root note (one) and everything else will fall into place.
 one = :D2
@@ -14,6 +14,13 @@ in_thread(name: :bass) do
   1.times { bass_line one }
 end
 
+live_loop :amen_break do
+  with_fx :slicer, phase: 0.25, wave: 0, mix: 1 do
+    sample :loop_amen, beat_stretch: 1
+  end
+  sleep 1
+end
+
 define :bass_line do |root|
   4.times do |i|
     if i != 3
@@ -24,21 +31,19 @@ define :bass_line do |root|
         play_note note_1, trip_uh
         play_note note_2, let
       end
-
+      
       if i == 0 || i == 2
         play_note root+12, 4
       elsif i == 1
         play_note root + 12, trip_uh
         play_note root + 7, let + 3
       end
-    else 
-      sleep trip_uh
+    else
       play_note root + 14, let + 1
       play_note root + 14, 1
       play_note root + 14, 1
       play_note root + 12, 1 + trip_uh
       play_note root + 7, 1
-      sleep 1
     end
   end
 end
